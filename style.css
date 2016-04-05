@@ -1,0 +1,47 @@
+body{
+  background-color: orange;
+  overflow: hidden;
+}
+
+.open{
+  position: absolute;
+  height: 100px;
+  width: 200px;
+  z-index: 6;
+  background-color: grey;
+  border-radius: 20px;
+  text-align: center;
+}
+
+.close{
+  position: absolute;
+  height: 50px;
+  width: 50px;
+  background-color: red;
+  border-radius: 25px;
+  font-size: 70%;
+  text-align: center;
+}
+
+.curtain{
+  background-color: maroon;
+  height: 100%;
+  width: 50%;
+  z-index: 5;
+  color: white;
+  text-align: center;
+}
+
+#curtain1{
+  position: absolute;
+  top: 0%;
+  left: 0%;
+
+
+}
+
+#curtain2{
+  position: absolute;
+  top: 0%;
+  left: 50%;
+}
