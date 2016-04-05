@@ -1,6 +1,6 @@
 body{
   background-color: orange;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .open{
