@@ -1,6 +1,7 @@
 body{
   background-color: orange;
   overflow-x: hidden;
+  font-family: monospace;
 }
 
 .open{

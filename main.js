@@ -1,38 +1,58 @@
 $(document).ready(function(){
-var open = ".open";
-var close = ".close";
-var curtainL = "#curtain1";
-var curtainR = "#curtain2";
-var openW = $(open).width();
-var openH = $(open).height();
-var windowW = $(window).width();
-var windowH=$(window).height();
 
-centerElement = function(element){
-  var desiredx = windowW/2-$(element).width()/2;
-  var desiredy = windowH/2-$(element).height()/2;
-  $(element).css({left: desiredx, top: desiredy});
-}
-centerElement(open);
-centerElement(close);
 
-$(close).click(function(){
-  $(curtainL).animate({left:"+="+(windowW/2)+"px"},750);
-  $(curtainR).animate({left:"-="+(windowW/2)+"px"},750);
-  setTimeout(function () {
-    $("body").append("<div class='open'><br><br>OPEN</div>");
-    centerElement(open);
-  }, 750);
-})
+var curtain = {
+  curtainSpeed: 750,
+  init: function(){
+    this.cacheDom();
+    this.bindEvents();
+    this.centerElement(this.$open);
+    this.centerElement(this.$close);
+  },
+  cacheDom: function(){
+    this.cacheOpen();
+    this.$close=$('.close');
+    this.$curtainL=$('#curtain1');
+    this.$curtainR=$('#curtain2');
+    this.$window=$(window);
+    this.$body=$('body');
+  },
+  cacheOpen: function(){
+    //needs recached upon append, others do not.
+    this.$open=$('.open');
+  },
+  bindEvents: function(){
+    this.bindOpen();
+    this.$close.on('click',this.closeCurtain.bind(this));
+  },
+  bindOpen: function(){
+    //separate bind event needed for appended div, else double "closing" curtains
+    this.$open.on('click',this.openCurtain.bind(this));
+  },
+  centerElement: function($el){
+    var desiredx = this.$window.width()/2-$el.width()/2;
+    var desiredy = this.$window.height()/2-$el.height()/2;
+    $el.css({left:desiredx,top:desiredy});
+  },
+  closeCurtain: function(){
+    this.$curtainL.animate({left:"+="+(this.$window.width()/2)+"px"},this.curtainSpeed);
+    this.$curtainR.animate({left:"-="+(this.$window.width()/2)+"px"},this.curtainSpeed);
+    setTimeout(function () {
+      //this being reset to window for some reason? have to use curtain.stuff
+      curtain.$body.append("<div class='open'><br><br><br>OPEN</div>");
+      curtain.cacheOpen();
+      curtain.bindOpen();
+      curtain.centerElement(curtain.$open);
+    }, curtain.curtainSpeed);
+  },
+  openCurtain: function(){
+    this.$open.remove();
+    this.$curtainL.animate({left:"-="+(this.$window.width()/2)+"px"},this.curtainSpeed);
+    this.$curtainR.animate({left:"+="+(this.$window.width()/2)+"px"},this.curtainSpeed);
+  }
 
-//has to be event delegation because .open is removed and reappended
-$('body').on('click','.open',function(){
-  //removes open button, slides curtains
-  $(open).remove();
-  $(curtainL).animate({left:"-="+(windowW/2)+"px"},750);
-  $(curtainR).animate({left:"+="+(windowW/2)+"px"},750);
+};
+
+curtain.init();
+
 });
-
-
-
-})
